@@ -52,6 +52,28 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				// Medieval theme colors
+				parchment: {
+					light: '#f5f0e1',
+					DEFAULT: '#ede0c8',
+					dark: '#d5c4a1',
+				},
+				royal: {
+					blue: '#2c3e50',
+					red: '#962d3e',
+					gold: '#daA520',
+					purple: '#5d4037',
+				},
+				wood: {
+					light: '#d7ccc8',
+					DEFAULT: '#a1887f',
+					dark: '#795548',
+				},
+				stone: {
+					light: '#e0e0e0',
+					DEFAULT: '#9e9e9e',
+					dark: '#616161',
+				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
