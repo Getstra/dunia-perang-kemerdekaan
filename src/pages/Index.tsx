@@ -10,7 +10,7 @@ import Buildings from '../components/Buildings';
 import GameLog from '../components/GameLog';
 import ThemeToggle from '../components/ThemeToggle';
 import { useTheme } from '../providers/ThemeProvider';
-import { GameState, Kingdom } from '../utils/types';
+import { GameState, Kingdom, BuildingType } from '../utils/types';
 import { 
   getInitialState, 
   createKingdom as createLocalKingdom, 
@@ -112,7 +112,7 @@ const Index = () => {
             id: b.id,
             name: b.name,
             level: b.level,
-            type: b.type,
+            type: b.type as BuildingType, // Fix: Cast the string to BuildingType enum
             cost: {}, // This would need to be handled differently
             production: {}, // This would need to be handled differently
             description: '',
