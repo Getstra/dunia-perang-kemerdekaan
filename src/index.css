@@ -120,4 +120,62 @@
   .neu-progress-bar {
     @apply h-full bg-neu-accent-primary transition-all duration-300;
   }
+  
+  /* Medieval font */
+  .font-medieval {
+    @apply font-serif;
+  }
+  
+  /* Parchment styling */
+  .parchment {
+    @apply bg-amber-50 border border-amber-200 rounded-lg p-6 text-amber-900;
+  }
+  
+  /* Medieval button */
+  .medieval-button {
+    @apply px-4 py-2 bg-amber-700 text-amber-50 rounded shadow hover:bg-amber-800 transition-colors;
+  }
+}
+
+/* Loading animation */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Colors for medieval theme */
+.text-royal-gold {
+  @apply text-amber-500;
+}
+
+.text-royal-red {
+  @apply text-red-700;
+}
+
+.text-royal-blue {
+  @apply text-blue-700;
+}
+
+.bg-parchment-light {
+  @apply bg-amber-50;
+}
+
+.bg-parchment-dark {
+  @apply bg-amber-100;
+}
+
+.border-wood {
+  @apply border-amber-700;
+}
+
+.border-wood-dark {
+  @apply border-amber-900;
 }

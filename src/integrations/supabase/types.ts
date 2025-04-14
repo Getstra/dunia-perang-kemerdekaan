@@ -9,7 +9,191 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      buildings: {
+        Row: {
+          completed: boolean
+          completion_time: string | null
+          created_at: string
+          id: string
+          kingdom_id: string
+          level: number
+          name: string
+          type: string
+        }
+        Insert: {
+          completed?: boolean
+          completion_time?: string | null
+          created_at?: string
+          id?: string
+          kingdom_id: string
+          level?: number
+          name: string
+          type: string
+        }
+        Update: {
+          completed?: boolean
+          completion_time?: string | null
+          created_at?: string
+          id?: string
+          kingdom_id?: string
+          level?: number
+          name?: string
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "buildings_kingdom_id_fkey"
+            columns: ["kingdom_id"]
+            isOneToOne: false
+            referencedRelation: "kingdoms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      game_logs: {
+        Row: {
+          id: string
+          kingdom_id: string
+          message: string
+          timestamp: string
+          type: string
+        }
+        Insert: {
+          id?: string
+          kingdom_id: string
+          message: string
+          timestamp?: string
+          type: string
+        }
+        Update: {
+          id?: string
+          kingdom_id?: string
+          message?: string
+          timestamp?: string
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "game_logs_kingdom_id_fkey"
+            columns: ["kingdom_id"]
+            isOneToOne: false
+            referencedRelation: "kingdoms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      kingdoms: {
+        Row: {
+          age: number
+          created_at: string
+          id: string
+          last_updated: string
+          name: string
+          profile_id: string
+          ruler: string
+        }
+        Insert: {
+          age?: number
+          created_at?: string
+          id?: string
+          last_updated?: string
+          name: string
+          profile_id: string
+          ruler: string
+        }
+        Update: {
+          age?: number
+          created_at?: string
+          id?: string
+          last_updated?: string
+          name?: string
+          profile_id?: string
+          ruler?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "kingdoms_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          id: string
+          last_login: string | null
+          updated_at: string
+          username: string
+        }
+        Insert: {
+          created_at?: string
+          id: string
+          last_login?: string | null
+          updated_at?: string
+          username: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          last_login?: string | null
+          updated_at?: string
+          username?: string
+        }
+        Relationships: []
+      }
+      resources: {
+        Row: {
+          farmers: number
+          food: number
+          gold: number
+          kingdom_id: string
+          land: number
+          miners: number
+          population: number
+          scholars: number
+          soldiers: number
+          stone: number
+          wood: number
+        }
+        Insert: {
+          farmers?: number
+          food?: number
+          gold?: number
+          kingdom_id: string
+          land?: number
+          miners?: number
+          population?: number
+          scholars?: number
+          soldiers?: number
+          stone?: number
+          wood?: number
+        }
+        Update: {
+          farmers?: number
+          food?: number
+          gold?: number
+          kingdom_id?: string
+          land?: number
+          miners?: number
+          population?: number
+          scholars?: number
+          soldiers?: number
+          stone?: number
+          wood?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "resources_kingdom_id_fkey"
+            columns: ["kingdom_id"]
+            isOneToOne: true
+            referencedRelation: "kingdoms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never

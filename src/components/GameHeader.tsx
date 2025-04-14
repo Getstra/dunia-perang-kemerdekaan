@@ -1,6 +1,7 @@
 
 import React from 'react';
-import { Scroll, Home, Settings } from 'lucide-react';
+import { Scroll, Home, Settings, LogOut } from 'lucide-react';
+import { useAuth } from '@/providers/AuthProvider';
 
 interface GameHeaderProps {
   kingdomName: string;
@@ -19,6 +20,8 @@ const GameHeader: React.FC<GameHeaderProps> = ({
   onSaveGame,
   gameStarted
 }) => {
+  const { signOut } = useAuth();
+  
   return (
     <header className="border-b border-wood-dark pb-2 mb-4">
       <div className="flex flex-col md:flex-row items-center justify-between">
@@ -54,6 +57,15 @@ const GameHeader: React.FC<GameHeaderProps> = ({
               Save Game
             </button>
           )}
+          
+          <button 
+            onClick={signOut}
+            className="medieval-button flex items-center"
+            title="Sign Out"
+          >
+            <LogOut className="w-4 h-4 mr-1" />
+            Sign Out
+          </button>
         </div>
       </div>
     </header>
