@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -52,37 +53,31 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				// Medieval theme colors
-				parchment: {
-					light: '#f5f0e1',
-					DEFAULT: '#ede0c8',
-					dark: '#d5c4a1',
-				},
-				royal: {
-					blue: '#2c3e50',
-					red: '#962d3e',
-					gold: '#daA520',
-					purple: '#5d4037',
-				},
-				wood: {
-					light: '#d7ccc8',
-					DEFAULT: '#a1887f',
-					dark: '#795548',
-				},
-				stone: {
-					light: '#e0e0e0',
-					DEFAULT: '#9e9e9e',
-					dark: '#616161',
-				},
-				sidebar: {
-					DEFAULT: 'hsl(var(--sidebar-background))',
-					foreground: 'hsl(var(--sidebar-foreground))',
-					primary: 'hsl(var(--sidebar-primary))',
-					'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
-					accent: 'hsl(var(--sidebar-accent))',
-					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
-					border: 'hsl(var(--sidebar-border))',
-					ring: 'hsl(var(--sidebar-ring))'
+				// Neumorphism colors
+				neu: {
+					bg: {
+						light: '#f0f0f3',
+						dark: '#1A1F2C'
+					},
+					shadow: {
+						light: {
+							primary: '#ffffff',
+							secondary: '#d1d9e6'
+						},
+						dark: {
+							primary: '#202330',
+							secondary: '#151823'
+						}
+					},
+					text: {
+						light: '#2a2a2a',
+						dark: '#e0e0e0'
+					},
+					accent: {
+						primary: '#8B5CF6',
+						secondary: '#7048e8',
+						tertiary: '#5734b6'
+					}
 				}
 			},
 			borderRadius: {
@@ -111,6 +106,14 @@ export default {
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out'
+			},
+			boxShadow: {
+				'neu-light': '10px 10px 20px #d1d9e6, -10px -10px 20px #ffffff',
+				'neu-light-sm': '5px 5px 10px #d1d9e6, -5px -5px 10px #ffffff',
+				'neu-light-inner': 'inset 5px 5px 10px #d1d9e6, inset -5px -5px 10px #ffffff',
+				'neu-dark': '10px 10px 20px #151823, -10px -10px 20px #202330',
+				'neu-dark-sm': '5px 5px 10px #151823, -5px -5px 10px #202330',
+				'neu-dark-inner': 'inset 5px 5px 10px #151823, inset -5px -5px 10px #202330'
 			}
 		}
 	},
