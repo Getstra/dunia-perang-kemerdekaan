@@ -135,6 +135,18 @@
   .medieval-button {
     @apply px-4 py-2 bg-amber-700 text-amber-50 rounded shadow hover:bg-amber-800 transition-colors;
   }
+  
+  .medieval-button-sm {
+    @apply px-3 py-1 text-sm bg-amber-700 text-amber-50 rounded shadow hover:bg-amber-800 transition-colors;
+  }
+  
+  .medieval-button-active {
+    @apply bg-amber-900 text-amber-50;
+  }
+  
+  .medieval-heading {
+    @apply font-medieval font-bold;
+  }
 }
 
 /* Loading animation */
@@ -147,8 +159,21 @@
   }
 }
 
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
 .animate-spin {
   animation: spin 1s linear infinite;
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 /* Colors for medieval theme */
