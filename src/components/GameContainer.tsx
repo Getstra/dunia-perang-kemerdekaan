@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { useTheme } from "@/providers/ThemeProvider";
 import { GameState } from "@/utils/types";
@@ -6,6 +7,7 @@ import KingdomCreate from "./KingdomCreate";
 import Resources from "./Resources";
 import Buildings from "./Buildings";
 import GameLog from "./GameLog";
+import { Swords, Users, BookOpen, UserPlus, Map as MapIcon } from "lucide-react";
 
 interface GameContainerProps {
   gameState: GameState;
@@ -215,7 +217,7 @@ const GameContainer: React.FC<GameContainerProps> = ({
             <div className="md:col-span-3">
               <div className={`neu-card ${theme}`}>
                 <h2 className="text-2xl font-bold mb-4 flex items-center">
-                  <Map className="w-6 h-6 mr-2 text-amber-600" /> Land
+                  <MapIcon className="w-6 h-6 mr-2 text-amber-600" /> Land
                 </h2>
                 <p className="text-muted-foreground">
                   View your kingdom's land and plan expansions.
