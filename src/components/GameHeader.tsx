@@ -1,23 +1,24 @@
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { 
-  Home, 
-  Settings as SettingsIcon, 
-  Trophy, 
-  Award, 
-  HelpCircle, 
-  Save, 
+import {
+  Home,
+  Settings as SettingsIcon,
+  Trophy,
+  Award,
+  HelpCircle,
+  Save,
   RotateCcw,
   Menu as MenuIcon,
   Swords,
   Users,
   BookOpen,
   UserPlus,
-  Map as MapIcon
+  Map as MapIcon,
+  LogOut,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/providers/ThemeProvider";
+import { useAuth } from "@/providers/AuthProvider";
 import GameSettings from "./GameSettings";
 import GameTutorial from "./GameTutorial";
 
@@ -41,22 +42,23 @@ const GameHeader: React.FC<GameHeaderProps> = ({
   onMenuSelect,
 }) => {
   const { theme } = useTheme();
+  const { signOut } = useAuth();
   const navigate = useNavigate();
   const [showSettings, setShowSettings] = useState(false);
   const [showTutorial, setShowTutorial] = useState(false);
-  
+
   // Format age to show years and days
   const formatAge = (age: number) => {
     const years = Math.floor(age);
     const days = Math.floor((age - years) * 365);
-    
+
     if (years === 0) {
       return `${days} days`;
     }
-    
-    return `${years} ${years === 1 ? 'year' : 'years'}, ${days} days`;
+
+    return `${years} ${years === 1 ? "year" : "years"}, ${days} days`;
   };
-  
+
   return (
     <>
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
@@ -80,7 +82,7 @@ const GameHeader: React.FC<GameHeaderProps> = ({
           >
             <HelpCircle className="h-5 w-5" />
           </Button>
-          
+
           <Button
             variant="outline"
             size="icon"
@@ -90,7 +92,7 @@ const GameHeader: React.FC<GameHeaderProps> = ({
           >
             <SettingsIcon className="h-5 w-5" />
           </Button>
-          
+
           <Button
             variant="outline"
             size="icon"
@@ -101,7 +103,7 @@ const GameHeader: React.FC<GameHeaderProps> = ({
           >
             <Save className="h-5 w-5" />
           </Button>
-          
+
           <Button
             variant="outline"
             size="icon"
@@ -110,9 +112,22 @@ const GameHeader: React.FC<GameHeaderProps> = ({
           >
             <RotateCcw className="h-5 w-5" />
           </Button>
+
+          <Button
+            variant="outline"
+            size="icon"
+            className="ml-2"
+            onClick={() => {
+              signOut();
+              navigate("/auth");
+            }}
+            title="Logout"
+          >
+            <LogOut className="h-5 w-5" />
+          </Button>
         </div>
       </div>
-      
+
       {gameStarted && (
         <div className="flex flex-wrap gap-2 mb-6 border-t border-b border-amber-800/20 py-3">
           <Button
@@ -123,7 +138,7 @@ const GameHeader: React.FC<GameHeaderProps> = ({
           >
             <Home className="mr-1 h-4 w-4" /> Overview
           </Button>
-          
+
           <Button
             variant="ghost"
             size="sm"
@@ -132,7 +147,7 @@ const GameHeader: React.FC<GameHeaderProps> = ({
           >
             <Swords className="mr-1 h-4 w-4" /> Military
           </Button>
-          
+
           <Button
             variant="ghost"
             size="sm"
@@ -141,7 +156,7 @@ const GameHeader: React.FC<GameHeaderProps> = ({
           >
             <Users className="mr-1 h-4 w-4" /> Diplomacy
           </Button>
-          
+
           <Button
             variant="ghost"
             size="sm"
@@ -150,7 +165,7 @@ const GameHeader: React.FC<GameHeaderProps> = ({
           >
             <BookOpen className="mr-1 h-4 w-4" /> Research
           </Button>
-          
+
           <Button
             variant="ghost"
             size="sm"
@@ -159,7 +174,7 @@ const GameHeader: React.FC<GameHeaderProps> = ({
           >
             <UserPlus className="mr-1 h-4 w-4" /> Population
           </Button>
-          
+
           <Button
             variant="ghost"
             size="sm"
@@ -168,7 +183,7 @@ const GameHeader: React.FC<GameHeaderProps> = ({
           >
             <MapIcon className="mr-1 h-4 w-4" /> Land
           </Button>
-          
+
           <Button
             variant="ghost"
             size="sm"
@@ -177,7 +192,7 @@ const GameHeader: React.FC<GameHeaderProps> = ({
           >
             <Trophy className="mr-1 h-4 w-4" /> Leaderboard
           </Button>
-          
+
           <Button
             variant="ghost"
             size="sm"
@@ -188,7 +203,7 @@ const GameHeader: React.FC<GameHeaderProps> = ({
           </Button>
         </div>
       )}
-      
+
       {showSettings && <GameSettings onClose={() => setShowSettings(false)} />}
       {showTutorial && <GameTutorial onClose={() => setShowTutorial(false)} />}
     </>
