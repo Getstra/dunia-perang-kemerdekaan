@@ -9,6 +9,116 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      alliances: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          id: string
+          name: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          name: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          name?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      battle_logs: {
+        Row: {
+          battle_id: string | null
+          created_at: string | null
+          id: string
+          log_data: Json
+          round: number
+        }
+        Insert: {
+          battle_id?: string | null
+          created_at?: string | null
+          id?: string
+          log_data: Json
+          round: number
+        }
+        Update: {
+          battle_id?: string | null
+          created_at?: string | null
+          id?: string
+          log_data?: Json
+          round?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "battle_logs_battle_id_fkey"
+            columns: ["battle_id"]
+            isOneToOne: false
+            referencedRelation: "battles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      battles: {
+        Row: {
+          attacker_kingdom_id: string | null
+          attacker_units: Json
+          completed_at: string | null
+          created_at: string | null
+          defender_kingdom_id: string | null
+          defender_units: Json | null
+          id: string
+          result: Json | null
+          started_at: string | null
+          status: string
+        }
+        Insert: {
+          attacker_kingdom_id?: string | null
+          attacker_units: Json
+          completed_at?: string | null
+          created_at?: string | null
+          defender_kingdom_id?: string | null
+          defender_units?: Json | null
+          id?: string
+          result?: Json | null
+          started_at?: string | null
+          status?: string
+        }
+        Update: {
+          attacker_kingdom_id?: string | null
+          attacker_units?: Json
+          completed_at?: string | null
+          created_at?: string | null
+          defender_kingdom_id?: string | null
+          defender_units?: Json | null
+          id?: string
+          result?: Json | null
+          started_at?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "battles_attacker_kingdom_id_fkey"
+            columns: ["attacker_kingdom_id"]
+            isOneToOne: false
+            referencedRelation: "kingdoms"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "battles_defender_kingdom_id_fkey"
+            columns: ["defender_kingdom_id"]
+            isOneToOne: false
+            referencedRelation: "kingdoms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       buildings: {
         Row: {
           completed: boolean
@@ -75,6 +185,42 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "game_logs_kingdom_id_fkey"
+            columns: ["kingdom_id"]
+            isOneToOne: false
+            referencedRelation: "kingdoms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      kingdom_alliances: {
+        Row: {
+          alliance_id: string
+          joined_at: string | null
+          kingdom_id: string
+          role: string
+        }
+        Insert: {
+          alliance_id: string
+          joined_at?: string | null
+          kingdom_id: string
+          role?: string
+        }
+        Update: {
+          alliance_id?: string
+          joined_at?: string | null
+          kingdom_id?: string
+          role?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "kingdom_alliances_alliance_id_fkey"
+            columns: ["alliance_id"]
+            isOneToOne: false
+            referencedRelation: "alliances"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "kingdom_alliances_kingdom_id_fkey"
             columns: ["kingdom_id"]
             isOneToOne: false
             referencedRelation: "kingdoms"
@@ -189,6 +335,57 @@ export type Database = {
             foreignKeyName: "resources_kingdom_id_fkey"
             columns: ["kingdom_id"]
             isOneToOne: true
+            referencedRelation: "kingdoms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      trade_offers: {
+        Row: {
+          created_at: string | null
+          expires_at: string | null
+          id: string
+          offer_resources: Json
+          receiver_kingdom_id: string | null
+          request_resources: Json
+          sender_kingdom_id: string | null
+          status: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          expires_at?: string | null
+          id?: string
+          offer_resources: Json
+          receiver_kingdom_id?: string | null
+          request_resources: Json
+          sender_kingdom_id?: string | null
+          status?: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          expires_at?: string | null
+          id?: string
+          offer_resources?: Json
+          receiver_kingdom_id?: string | null
+          request_resources?: Json
+          sender_kingdom_id?: string | null
+          status?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "trade_offers_receiver_kingdom_id_fkey"
+            columns: ["receiver_kingdom_id"]
+            isOneToOne: false
+            referencedRelation: "kingdoms"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "trade_offers_sender_kingdom_id_fkey"
+            columns: ["sender_kingdom_id"]
+            isOneToOne: false
             referencedRelation: "kingdoms"
             referencedColumns: ["id"]
           },
