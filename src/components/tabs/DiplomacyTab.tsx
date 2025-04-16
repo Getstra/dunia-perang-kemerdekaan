@@ -1,6 +1,5 @@
-
 import React, { useState } from "react";
-import { Users, UserCheck, Truck, Globe, HandShake, BarChart3 } from "lucide-react";
+import { Users, UserCheck, Truck, Globe, Handshake, BarChart3 } from "lucide-react";
 import { useTheme } from "@/providers/ThemeProvider";
 import { Button } from "@/components/ui/button";
 import {
@@ -104,7 +103,7 @@ const DiplomacyTab: React.FC = () => {
                 onClick={() => setShowAllianceDialog(true)}
                 className="w-full flex items-center justify-center gap-1 border-amber-800/30 hover:bg-amber-900/20"
               >
-                <HandShake className="h-4 w-4" /> Manage Alliances
+                <Handshake className="h-4 w-4" /> Manage Alliances
               </Button>
             </div>
           </div>
