@@ -32,7 +32,7 @@ const Auth = () => {
       </div>
       
       <div className="absolute bottom-4 text-center w-full text-xs text-muted-foreground">
-        &copy; {new Date().getFullYear()} Utopia Kingdoms. All rights reserved.
+        &copy; {new Date().getFullYear()} Rising Kingdoms. All rights reserved.
       </div>
     </div>
   );

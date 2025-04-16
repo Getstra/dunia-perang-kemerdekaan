@@ -14,7 +14,7 @@ const AuthHeader: React.FC = () => {
       </div>
       
       <h2 className="text-2xl font-bold text-center mb-2">
-        Join the Medieval Adventure
+        Join the Adventure
       </h2>
       
       <p className="text-center text-muted-foreground max-w-md">
