@@ -1,7 +1,7 @@
 
 import React from "react";
 import { useTheme } from "@/providers/ThemeProvider";
-import Buildings from "../Buildings";
+import Buildings from "../buildings/Buildings";
 import GameLog from "../GameLog";
 import { GameState } from "@/utils/types";
 
