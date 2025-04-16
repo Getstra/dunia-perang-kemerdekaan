@@ -264,7 +264,7 @@ const Buildings: React.FC<BuildingsProps> = ({ buildings, resources, onBuild }) 
                         .map(([key, value], index) => (
                           <div key={index} className="flex justify-between">
                             <span className="text-sm">{key.charAt(0).toUpperCase() + key.slice(1)}</span>
-                            <span className="text-sm text-green-600">+{value} per day</span>
+                            <span className="text-sm text-green-600">+{String(value)} per day</span>
                           </div>
                         ))}
                     </div>

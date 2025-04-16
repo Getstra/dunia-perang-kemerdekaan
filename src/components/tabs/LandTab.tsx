@@ -1,6 +1,6 @@
 
 import React, { useState } from "react";
-import { Map as MapIcon, Trees, Mountain, Compass, Plus, Eye, Pickaxe, Shovel, Axe, Clock, Bird } from "lucide-react";
+import { Map as MapIcon, Trees, Mountain, Compass, Plus, Eye, Pickaxe, Shovel, Axe, Clock, Bird, ChevronDown, ChevronUp } from "lucide-react";
 import { useTheme } from "@/providers/ThemeProvider";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";

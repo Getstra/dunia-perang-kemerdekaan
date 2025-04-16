@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { UserPlus, Users, GraduationCap, Home, Building, Construction, Clock, Heart, Frown, ChevronUp, ChevronDown, Banana, Coffee } from "lucide-react";
 import { useTheme } from "@/providers/ThemeProvider";
@@ -278,13 +277,12 @@ const PopulationTab: React.FC = () => {
                     </div>
                     <Progress 
                       value={populationData.happiness} 
-                      className="h-2 mt-1" 
-                      indicatorClassName={`${
+                      className={`h-2 mt-1 ${
                         populationData.happiness >= 70 
-                          ? 'bg-green-600' 
+                          ? 'bg-green-600/20' 
                           : populationData.happiness >= 40 
-                          ? 'bg-amber-600' 
-                          : 'bg-red-600'
+                          ? 'bg-amber-600/20' 
+                          : 'bg-red-600/20'
                       }`} 
                     />
                   </div>
