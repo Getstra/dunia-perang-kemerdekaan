@@ -1,6 +1,6 @@
 
 import React, { useState } from "react";
-import { BookOpen, Sword, Coins, Sparkles, Beaker, FlaskConical, Brain } from "lucide-react";
+import { BookOpen, Sword, Coins, Sparkles, Beaker, FlaskConical, Brain, LightbulbIcon, Clock } from "lucide-react";
 import { useTheme } from "@/providers/ThemeProvider";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,11 +11,18 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Progress } from "@/components/ui/progress";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs";
 
 const ResearchTab: React.FC = () => {
   const { theme } = useTheme();
   const [showTechDialog, setShowTechDialog] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("military");
+  const [activeResearch, setActiveResearch] = useState<null | { id: number, name: string, category: string, progress: number }>(null);
 
   // Research data
   const researchStats = {
@@ -44,7 +51,8 @@ const ResearchTab: React.FC = () => {
         cost: 100,
         time: "2 days", 
         progress: 0,
-        prerequisites: []
+        prerequisites: [],
+        completed: false
       },
       { 
         id: 2, 
@@ -53,7 +61,8 @@ const ResearchTab: React.FC = () => {
         cost: 200,
         time: "3 days", 
         progress: 0,
-        prerequisites: ["Improved Weapons"]
+        prerequisites: ["Improved Weapons"],
+        completed: false
       },
       { 
         id: 3, 
@@ -62,7 +71,8 @@ const ResearchTab: React.FC = () => {
         cost: 300,
         time: "4 days", 
         progress: 0,
-        prerequisites: ["Advanced Armor"]
+        prerequisites: ["Advanced Armor"],
+        completed: false
       },
     ],
     economy: [
@@ -73,7 +83,8 @@ const ResearchTab: React.FC = () => {
         cost: 100,
         time: "2 days", 
         progress: 0,
-        prerequisites: []
+        prerequisites: [],
+        completed: false
       },
       { 
         id: 2, 
@@ -82,7 +93,8 @@ const ResearchTab: React.FC = () => {
         cost: 200,
         time: "3 days", 
         progress: 0,
-        prerequisites: ["Efficient Mining"]
+        prerequisites: ["Efficient Mining"],
+        completed: false
       },
       { 
         id: 3, 
@@ -91,7 +103,8 @@ const ResearchTab: React.FC = () => {
         cost: 300,
         time: "4 days", 
         progress: 0,
-        prerequisites: ["Advanced Logging"]
+        prerequisites: ["Advanced Logging"],
+        completed: false
       },
     ],
     magic: [
@@ -102,7 +115,8 @@ const ResearchTab: React.FC = () => {
         cost: 150,
         time: "3 days", 
         progress: 0,
-        prerequisites: []
+        prerequisites: [],
+        completed: false
       },
       { 
         id: 2, 
@@ -111,7 +125,8 @@ const ResearchTab: React.FC = () => {
         cost: 250,
         time: "4 days", 
         progress: 0,
-        prerequisites: ["Basic Enchantments"]
+        prerequisites: ["Basic Enchantments"],
+        completed: false
       },
       { 
         id: 3, 
@@ -120,9 +135,21 @@ const ResearchTab: React.FC = () => {
         cost: 350,
         time: "5 days", 
         progress: 0,
-        prerequisites: ["Elemental Magic"]
+        prerequisites: ["Elemental Magic"],
+        completed: false
       },
     ]
+  };
+
+  const isResearchAvailable = (tech: any): boolean => {
+    if (tech.prerequisites.length === 0) return true;
+    
+    return tech.prerequisites.every((prereq: string) => {
+      const category = Object.keys(technologies).find(cat => 
+        technologies[cat as keyof typeof technologies].some(t => t.name === prereq && t.completed)
+      );
+      return category !== undefined;
+    });
   };
 
   return (
@@ -145,7 +172,16 @@ const ResearchTab: React.FC = () => {
             <div className="p-3 bg-amber-900/10 rounded-md border border-amber-800/30">
               <p className="text-sm font-semibold">Completed Research</p>
               <p className="text-2xl font-bold text-amber-600">{researchStats.completedTechs}</p>
-              <p className="text-xs text-muted-foreground">No technologies researched</p>
+              <div className="flex items-center text-xs text-muted-foreground">
+                {activeResearch ? (
+                  <div className="flex items-center">
+                    <Clock className="h-3 w-3 mr-1 text-amber-600" />
+                    <span>Researching: {activeResearch.name}</span>
+                  </div>
+                ) : (
+                  <span>No active research</span>
+                )}
+              </div>
             </div>
             <div className="p-3 bg-amber-900/10 rounded-md border border-amber-800/30">
               <p className="text-sm font-semibold">Research Levels</p>
@@ -161,129 +197,50 @@ const ResearchTab: React.FC = () => {
           </div>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-          <div className="p-4 border border-amber-800/30 bg-amber-900/10 rounded-md">
-            <h3 className="font-semibold text-lg mb-2 flex items-center">
-              <Sword className="w-4 h-4 mr-2 text-amber-600" /> Military Tech
-            </h3>
-            <p className="text-sm text-muted-foreground mb-4">
-              Improve your military capabilities
-            </p>
+        <div className="mt-6">
+          <Tabs defaultValue="military" className="w-full">
+            <TabsList className="grid grid-cols-3 mb-4">
+              <TabsTrigger value="military" className="flex items-center gap-1">
+                <Sword className="h-4 w-4" /> Military
+              </TabsTrigger>
+              <TabsTrigger value="economy" className="flex items-center gap-1">
+                <Coins className="h-4 w-4" /> Economy
+              </TabsTrigger>
+              <TabsTrigger value="magic" className="flex items-center gap-1">
+                <Sparkles className="h-4 w-4" /> Magic
+              </TabsTrigger>
+            </TabsList>
             
-            <div className="space-y-3">
-              <div className="p-3 border border-amber-800/20 rounded-md">
-                <p className="font-medium">Current Research</p>
-                <p className="text-sm text-muted-foreground mt-1">No active research</p>
-              </div>
-              
-              <Button 
-                variant="outline"
-                onClick={() => {
-                  setSelectedCategory("military");
-                  setShowTechDialog(true);
-                }}
-                className="w-full border-amber-800/30 hover:bg-amber-900/20"
-              >
-                Research Military Tech
-              </Button>
-            </div>
-          </div>
-          
-          <div className="p-4 border border-amber-800/30 bg-amber-900/10 rounded-md">
-            <h3 className="font-semibold text-lg mb-2 flex items-center">
-              <Coins className="w-4 h-4 mr-2 text-amber-600" /> Economy Tech
-            </h3>
-            <p className="text-sm text-muted-foreground mb-4">
-              Enhance your resource production
-            </p>
-            
-            <div className="space-y-3">
-              <div className="p-3 border border-amber-800/20 rounded-md">
-                <p className="font-medium">Current Research</p>
-                <p className="text-sm text-muted-foreground mt-1">No active research</p>
-              </div>
-              
-              <Button 
-                variant="outline"
-                onClick={() => {
-                  setSelectedCategory("economy");
-                  setShowTechDialog(true);
-                }}
-                className="w-full border-amber-800/30 hover:bg-amber-900/20"
-              >
-                Research Economy Tech
-              </Button>
-            </div>
-          </div>
-          
-          <div className="p-4 border border-amber-800/30 bg-amber-900/10 rounded-md">
-            <h3 className="font-semibold text-lg mb-2 flex items-center">
-              <Sparkles className="w-4 h-4 mr-2 text-amber-600" /> Magic Arts
-            </h3>
-            <p className="text-sm text-muted-foreground mb-4">
-              Discover magical abilities for your kingdom
-            </p>
-            
-            <div className="space-y-3">
-              <div className="p-3 border border-amber-800/20 rounded-md">
-                <p className="font-medium">Current Research</p>
-                <p className="text-sm text-muted-foreground mt-1">No active research</p>
-              </div>
-              
-              <Button 
-                variant="outline"
-                onClick={() => {
-                  setSelectedCategory("magic");
-                  setShowTechDialog(true);
-                }}
-                className="w-full border-amber-800/30 hover:bg-amber-900/20"
-              >
-                Research Magic Arts
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      {/* Research Dialog */}
-      <Dialog open={showTechDialog} onOpenChange={setShowTechDialog}>
-        <DialogContent className="sm:max-w-[500px]">
-          <DialogHeader>
-            <DialogTitle>Research Technologies</DialogTitle>
-          </DialogHeader>
-          
-          <div className="py-4">
-            <div className="space-y-4">
-              <div className="flex space-x-2 border-b pb-2">
-                {categories.map((category) => {
-                  const CategoryIcon = category.icon;
-                  return (
-                    <Button 
-                      key={category.id}
-                      variant={selectedCategory === category.id ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => setSelectedCategory(category.id)}
-                      className="flex items-center"
-                    >
-                      <CategoryIcon className="h-4 w-4 mr-1" /> {category.name}
-                    </Button>
-                  );
-                })}
-              </div>
-              
-              <h4 className="font-semibold text-sm flex items-center">
-                <Beaker className="h-4 w-4 mr-1" /> Available Technologies
-              </h4>
-              
-              <div className="space-y-2">
-                {technologies[selectedCategory as keyof typeof technologies].map((tech) => (
-                  <div key={tech.id} className="p-3 border border-amber-800/20 rounded-md bg-amber-900/5">
-                    <p className="font-medium">{tech.name}</p>
+            <TabsContent value="military" className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {technologies.military.map((tech) => (
+                  <div 
+                    key={tech.id} 
+                    className={`p-4 border rounded-md ${
+                      tech.completed 
+                        ? 'border-green-600/30 bg-green-600/5' 
+                        : tech.progress > 0
+                        ? 'border-amber-600/30 bg-amber-900/10' 
+                        : 'border-amber-800/20 bg-amber-900/5'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <h4 className="font-medium flex items-center">
+                        {tech.completed ? (
+                          <LightbulbIcon className="h-4 w-4 mr-1 text-green-600" />
+                        ) : (
+                          <Beaker className="h-4 w-4 mr-1 text-amber-600" />
+                        )}
+                        {tech.name}
+                      </h4>
+                      {tech.completed && <div className="text-xs font-medium text-green-600">Completed</div>}
+                    </div>
+                    
                     <p className="text-xs text-muted-foreground mt-1">
                       {tech.description}
                     </p>
                     
-                    {tech.progress > 0 && (
+                    {tech.progress > 0 && !tech.completed && (
                       <div className="mt-2">
                         <div className="flex justify-between text-xs">
                           <span>Progress</span>
@@ -293,33 +250,206 @@ const ResearchTab: React.FC = () => {
                       </div>
                     )}
                     
-                    <div className="flex justify-between items-center mt-2">
-                      <div>
-                        <p className="text-xs text-muted-foreground">Cost: {tech.cost} RP</p>
-                        <p className="text-xs text-muted-foreground">Time: {tech.time}</p>
+                    {!tech.completed && tech.progress === 0 && (
+                      <div className="flex justify-between items-center mt-2">
+                        <div className="text-xs text-muted-foreground">
+                          <div>Cost: {tech.cost} RP</div>
+                          <div>Time: {tech.time}</div>
+                        </div>
+                        <Button 
+                          size="sm" 
+                          variant="outline" 
+                          disabled={!isResearchAvailable(tech) || researchStats.points < tech.cost}
+                        >
+                          Research
+                        </Button>
                       </div>
-                      <Button size="sm" variant="outline" disabled>
-                        Research
-                      </Button>
-                    </div>
+                    )}
+                    
+                    {!isResearchAvailable(tech) && !tech.completed && (
+                      <div className="mt-2 text-xs text-amber-600">
+                        <div className="flex items-center">
+                          <LightbulbIcon className="h-3 w-3 mr-1" />
+                          <span>Prerequisites: {tech.prerequisites.join(', ')}</span>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
               
-              <div className="mt-4 p-3 border border-amber-800/20 rounded-md bg-amber-900/5">
-                <p className="text-sm font-medium">Requirements</p>
-                <p className="text-xs text-muted-foreground mt-1">
-                  You need to build a Library (Level 1) to conduct research.
-                </p>
+              <div className="p-3 border border-amber-800/20 rounded-md bg-amber-900/5 mt-4">
+                <div className="flex justify-between items-center">
+                  <p className="text-sm font-medium">Library Status</p>
+                  <div className="flex items-center text-amber-600">
+                    <Clock className="h-3 w-3 mr-1" />
+                    <span className="text-xs">Not Built</span>
+                  </div>
+                </div>
+                <p className="text-xs text-muted-foreground mt-1">Build a Library to conduct research.</p>
               </div>
-            </div>
-          </div>
-          
-          <DialogFooter>
-            <Button onClick={() => setShowTechDialog(false)}>Close</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+            </TabsContent>
+            
+            <TabsContent value="economy" className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {technologies.economy.map((tech) => (
+                  <div 
+                    key={tech.id} 
+                    className={`p-4 border rounded-md ${
+                      tech.completed 
+                        ? 'border-green-600/30 bg-green-600/5' 
+                        : tech.progress > 0
+                        ? 'border-amber-600/30 bg-amber-900/10' 
+                        : 'border-amber-800/20 bg-amber-900/5'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <h4 className="font-medium flex items-center">
+                        {tech.completed ? (
+                          <LightbulbIcon className="h-4 w-4 mr-1 text-green-600" />
+                        ) : (
+                          <Coins className="h-4 w-4 mr-1 text-amber-600" />
+                        )}
+                        {tech.name}
+                      </h4>
+                      {tech.completed && <div className="text-xs font-medium text-green-600">Completed</div>}
+                    </div>
+                    
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {tech.description}
+                    </p>
+                    
+                    {tech.progress > 0 && !tech.completed && (
+                      <div className="mt-2">
+                        <div className="flex justify-between text-xs">
+                          <span>Progress</span>
+                          <span>{tech.progress}%</span>
+                        </div>
+                        <Progress value={tech.progress} className="h-1.5 mt-1" />
+                      </div>
+                    )}
+                    
+                    {!tech.completed && tech.progress === 0 && (
+                      <div className="flex justify-between items-center mt-2">
+                        <div className="text-xs text-muted-foreground">
+                          <div>Cost: {tech.cost} RP</div>
+                          <div>Time: {tech.time}</div>
+                        </div>
+                        <Button 
+                          size="sm" 
+                          variant="outline" 
+                          disabled={!isResearchAvailable(tech) || researchStats.points < tech.cost}
+                        >
+                          Research
+                        </Button>
+                      </div>
+                    )}
+                    
+                    {!isResearchAvailable(tech) && !tech.completed && (
+                      <div className="mt-2 text-xs text-amber-600">
+                        <div className="flex items-center">
+                          <LightbulbIcon className="h-3 w-3 mr-1" />
+                          <span>Prerequisites: {tech.prerequisites.join(', ')}</span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+              
+              <div className="p-3 border border-amber-800/20 rounded-md bg-amber-900/5 mt-4">
+                <div className="flex justify-between items-center">
+                  <p className="text-sm font-medium">Library Status</p>
+                  <div className="flex items-center text-amber-600">
+                    <Clock className="h-3 w-3 mr-1" />
+                    <span className="text-xs">Not Built</span>
+                  </div>
+                </div>
+                <p className="text-xs text-muted-foreground mt-1">Build a Library to conduct research.</p>
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="magic" className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {technologies.magic.map((tech) => (
+                  <div 
+                    key={tech.id} 
+                    className={`p-4 border rounded-md ${
+                      tech.completed 
+                        ? 'border-green-600/30 bg-green-600/5' 
+                        : tech.progress > 0
+                        ? 'border-amber-600/30 bg-amber-900/10' 
+                        : 'border-amber-800/20 bg-amber-900/5'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <h4 className="font-medium flex items-center">
+                        {tech.completed ? (
+                          <LightbulbIcon className="h-4 w-4 mr-1 text-green-600" />
+                        ) : (
+                          <Sparkles className="h-4 w-4 mr-1 text-amber-600" />
+                        )}
+                        {tech.name}
+                      </h4>
+                      {tech.completed && <div className="text-xs font-medium text-green-600">Completed</div>}
+                    </div>
+                    
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {tech.description}
+                    </p>
+                    
+                    {tech.progress > 0 && !tech.completed && (
+                      <div className="mt-2">
+                        <div className="flex justify-between text-xs">
+                          <span>Progress</span>
+                          <span>{tech.progress}%</span>
+                        </div>
+                        <Progress value={tech.progress} className="h-1.5 mt-1" />
+                      </div>
+                    )}
+                    
+                    {!tech.completed && tech.progress === 0 && (
+                      <div className="flex justify-between items-center mt-2">
+                        <div className="text-xs text-muted-foreground">
+                          <div>Cost: {tech.cost} RP</div>
+                          <div>Time: {tech.time}</div>
+                        </div>
+                        <Button 
+                          size="sm" 
+                          variant="outline" 
+                          disabled={!isResearchAvailable(tech) || researchStats.points < tech.cost}
+                        >
+                          Research
+                        </Button>
+                      </div>
+                    )}
+                    
+                    {!isResearchAvailable(tech) && !tech.completed && (
+                      <div className="mt-2 text-xs text-amber-600">
+                        <div className="flex items-center">
+                          <LightbulbIcon className="h-3 w-3 mr-1" />
+                          <span>Prerequisites: {tech.prerequisites.join(', ')}</span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+              
+              <div className="p-3 border border-amber-800/20 rounded-md bg-amber-900/5 mt-4">
+                <div className="flex justify-between items-center">
+                  <p className="text-sm font-medium">Library Status</p>
+                  <div className="flex items-center text-amber-600">
+                    <Clock className="h-3 w-3 mr-1" />
+                    <span className="text-xs">Not Built</span>
+                  </div>
+                </div>
+                <p className="text-xs text-muted-foreground mt-1">Build a Library to conduct research.</p>
+              </div>
+            </TabsContent>
+          </Tabs>
+        </div>
+      </div>
     </div>
   );
 };

@@ -1,5 +1,6 @@
+
 import React, { useState } from "react";
-import { Users, UserCheck, Truck, Globe, Handshake, BarChart3 } from "lucide-react";
+import { Users, UserCheck, Truck, Globe, Handshake, BarChart3, Clock, ShieldAlert, Award } from "lucide-react";
 import { useTheme } from "@/providers/ThemeProvider";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,11 +10,13 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
+import { Progress } from "@/components/ui/progress";
 
 const DiplomacyTab: React.FC = () => {
   const { theme } = useTheme();
   const [showAllianceDialog, setShowAllianceDialog] = useState(false);
   const [showTradeDialog, setShowTradeDialog] = useState(false);
+  const [selectedKingdom, setSelectedKingdom] = useState<number | null>(null);
 
   // Kingdom relations data
   const relations = [
@@ -24,8 +27,8 @@ const DiplomacyTab: React.FC = () => {
 
   // Alliance options
   const allianceOptions = [
-    { id: 1, name: "Eastdale", benefits: ["Mutual Defense", "Open Borders"], requirements: "70+ Relations" },
-    { id: 2, name: "Southern Isles", benefits: ["Resource Sharing", "Military Support"], requirements: "80+ Relations" },
+    { id: 1, name: "Eastdale", benefits: ["Mutual Defense", "Open Borders"], requirements: "70+ Relations", relationLevel: 50 },
+    { id: 2, name: "Southern Isles", benefits: ["Resource Sharing", "Military Support"], requirements: "80+ Relations", relationLevel: 75 },
   ];
 
   // Trade route options
@@ -35,10 +38,18 @@ const DiplomacyTab: React.FC = () => {
     { id: 3, name: "Western Dominion", offers: "Iron, Gems", wants: "Food, Wood", profit: "+35 Gold/day" },
   ];
 
+  // Active alliances and trade routes (empty for now but would be filled from game state)
+  const activeAlliances: any[] = [];
+  const activeTradeRoutes: any[] = [];
+
   const getRelationColor = (level: number) => {
     if (level >= 70) return "text-green-600";
     if (level >= 40) return "text-amber-600";
     return "text-red-600";
+  };
+
+  const handleKingdomSelect = (id: number) => {
+    setSelectedKingdom(id);
   };
 
   return (
@@ -55,18 +66,18 @@ const DiplomacyTab: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="p-3 bg-amber-900/10 rounded-md border border-amber-800/30">
               <p className="text-sm font-semibold">Known Kingdoms</p>
-              <p className="text-2xl font-bold text-amber-600">3</p>
+              <p className="text-2xl font-bold text-amber-600">{relations.length}</p>
               <p className="text-xs text-muted-foreground">Discovered through exploration</p>
             </div>
             <div className="p-3 bg-amber-900/10 rounded-md border border-amber-800/30">
               <p className="text-sm font-semibold">Active Alliances</p>
-              <p className="text-2xl font-bold text-amber-600">0</p>
-              <p className="text-xs text-muted-foreground">No formal alliances established</p>
+              <p className="text-2xl font-bold text-amber-600">{activeAlliances.length}</p>
+              <p className="text-xs text-muted-foreground">{activeAlliances.length > 0 ? `${activeAlliances.length} formal alliances established` : "No formal alliances established"}</p>
             </div>
             <div className="p-3 bg-amber-900/10 rounded-md border border-amber-800/30">
               <p className="text-sm font-semibold">Trade Income</p>
-              <p className="text-2xl font-bold text-amber-600">0</p>
-              <p className="text-xs text-muted-foreground">No active trade routes</p>
+              <p className="text-2xl font-bold text-amber-600">{activeTradeRoutes.length > 0 ? "+75" : "0"}</p>
+              <p className="text-xs text-muted-foreground">{activeTradeRoutes.length > 0 ? `${activeTradeRoutes.length} active trade routes` : "No active trade routes"}</p>
             </div>
           </div>
         </div>
@@ -83,17 +94,66 @@ const DiplomacyTab: React.FC = () => {
             <div className="space-y-3">
               <div className="space-y-2">
                 {relations.map((kingdom) => (
-                  <div key={kingdom.id} className="p-3 border border-amber-800/20 rounded-md">
+                  <div 
+                    key={kingdom.id} 
+                    className={`p-3 border border-amber-800/20 rounded-md cursor-pointer transition-all ${selectedKingdom === kingdom.id ? 'bg-amber-900/20' : 'hover:bg-amber-900/10'}`}
+                    onClick={() => handleKingdomSelect(kingdom.id)}
+                  >
                     <div className="flex justify-between">
                       <div>
                         <p className="font-medium">{kingdom.name}</p>
-                        <p className="text-xs text-muted-foreground">Status: {kingdom.status}</p>
+                        <div className="flex items-center">
+                          <p className="text-xs text-muted-foreground">Status: {kingdom.status}</p>
+                          {kingdom.status === "Friendly" && (
+                            <span className="ml-1 text-xs bg-green-600/20 text-green-700 px-1 rounded">+5 relation/day</span>
+                          )}
+                          {kingdom.status === "Hostile" && (
+                            <span className="ml-1 text-xs bg-red-600/20 text-red-700 px-1 rounded">-3 relation/day</span>
+                          )}
+                        </div>
                       </div>
                       <div className="text-right">
                         <p className="text-xs font-medium">Relations</p>
                         <p className={`text-sm ${getRelationColor(kingdom.relationLevel)}`}>{kingdom.relationLevel}/100</p>
+                        <Progress value={kingdom.relationLevel} className="h-1 mt-1 w-16" />
                       </div>
                     </div>
+                    {selectedKingdom === kingdom.id && (
+                      <div className="mt-3 pt-2 border-t border-amber-800/20 flex flex-wrap gap-2">
+                        <Button 
+                          size="sm" 
+                          variant="outline" 
+                          className="text-xs" 
+                          disabled={kingdom.relationLevel < 70}
+                        >
+                          <Handshake className="h-3 w-3 mr-1" /> Form Alliance
+                        </Button>
+                        <Button 
+                          size="sm" 
+                          variant="outline" 
+                          className="text-xs"
+                        >
+                          <Award className="h-3 w-3 mr-1" /> Send Gift
+                        </Button>
+                        <Button 
+                          size="sm" 
+                          variant="outline" 
+                          className="text-xs" 
+                          disabled={kingdom.relationLevel < 40}
+                        >
+                          <Truck className="h-3 w-3 mr-1" /> Propose Trade
+                        </Button>
+                        {kingdom.status !== "Hostile" && (
+                          <Button 
+                            size="sm" 
+                            variant="outline" 
+                            className="text-xs text-red-600" 
+                          >
+                            <ShieldAlert className="h-3 w-3 mr-1" /> Declare War
+                          </Button>
+                        )}
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
@@ -120,6 +180,17 @@ const DiplomacyTab: React.FC = () => {
               <div className="p-3 border border-amber-800/20 rounded-md">
                 <p className="text-sm">You have no active trade routes.</p>
                 <p className="text-xs text-muted-foreground mt-1">Establish trade routes to generate passive income.</p>
+              </div>
+              
+              <div className="p-3 border border-amber-800/20 rounded-md">
+                <div className="flex justify-between items-center">
+                  <p className="text-sm font-medium">Trading Post Status</p>
+                  <div className="flex items-center text-amber-600">
+                    <Clock className="h-3 w-3 mr-1" />
+                    <span className="text-xs">Not Built</span>
+                  </div>
+                </div>
+                <p className="text-xs text-muted-foreground mt-1">Build a Trading Post to establish trade routes with other kingdoms.</p>
               </div>
               
               <Button 
@@ -154,9 +225,17 @@ const DiplomacyTab: React.FC = () => {
                     </p>
                     <div className="flex justify-between items-center mt-2">
                       <p className="text-xs text-muted-foreground">Requires: {option.requirements}</p>
-                      <Button size="sm" variant="outline" disabled>
+                      <Button 
+                        size="sm" 
+                        variant="outline" 
+                        disabled={option.relationLevel < 70}
+                      >
                         Form Alliance
                       </Button>
+                    </div>
+                    <div className="mt-2">
+                      <p className="text-xs font-medium">Current Relations: {option.relationLevel}/100</p>
+                      <Progress value={option.relationLevel} className="h-1.5 mt-1" />
                     </div>
                   </div>
                 ))}
