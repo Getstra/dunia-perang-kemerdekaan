@@ -1,4 +1,3 @@
-
 export interface Kingdom {
   id: string;
   name: string;
@@ -26,6 +25,7 @@ export interface Building {
   id: string;
   name: string;
   level: number;
+  maxLevel?: number;
   type: BuildingType;
   cost: Partial<Resources>;
   production: Partial<Resources>;
@@ -37,9 +37,9 @@ export interface Building {
 
 export enum BuildingType {
   RESOURCE = "resource",
-  MILITARY = "military", 
+  MILITARY = "military",
   SPECIAL = "special",
-  INFRASTRUCTURE = "infrastructure"
+  INFRASTRUCTURE = "infrastructure",
 }
 
 export interface GameAction {

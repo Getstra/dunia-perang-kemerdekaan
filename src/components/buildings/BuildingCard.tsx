@@ -253,13 +253,18 @@ const BuildingCard: React.FC<BuildingCardProps> = ({
 
           <button
             onClick={() => onBuild(building.id)}
-            disabled={!canBuild(building)}
+            disabled={
+              !canBuild(building) ||
+              (building.maxLevel && building.level >= building.maxLevel)
+            }
             className={`w-full mt-4 py-2.5 px-4 rounded-md border text-sm font-semibold shadow-md transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]
               ${
                 canBuild(building)
                   ? building.level === 0
                     ? "bg-amber-600 hover:bg-amber-700 text-white border-amber-700 transition-colors shadow-amber-500/20"
-                    : "bg-emerald-600 hover:bg-emerald-700 text-white border-emerald-700 transition-colors shadow-emerald-500/20"
+                    : building.maxLevel && building.level >= building.maxLevel
+                      ? "bg-gray-400 text-gray-100 border-gray-500 cursor-not-allowed"
+                      : "bg-emerald-600 hover:bg-emerald-700 text-white border-emerald-700 transition-colors shadow-emerald-500/20"
                   : "bg-gray-200 text-gray-500 border-gray-300 cursor-not-allowed"
               }`}
           >
