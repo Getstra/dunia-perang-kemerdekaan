@@ -257,7 +257,7 @@ const BuildingCard: React.FC<BuildingCardProps> = ({
                 {building.production.specialists && (
                   <div className="mt-1">
                     <span className="font-medium">Specialists: </span>
-                    {Object.entries(building.production.specialists || {})
+                    {Object.entries(building.production.specialists)
                       .filter(([_, value]) => value !== undefined && value !== null && value > 0)
                       .map(([key, value], index, arr) => (
                         <span key={key} className="inline-flex items-center">
