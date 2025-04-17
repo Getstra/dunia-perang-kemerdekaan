@@ -1,4 +1,3 @@
-
 import React from "react";
 import { useTheme } from "@/providers/ThemeProvider";
 import Buildings from "../buildings/Buildings";
@@ -16,7 +15,7 @@ const OverviewTab: React.FC<OverviewTabProps> = ({ gameState, onBuild }) => {
   return (
     <>
       <div className="md:col-span-2">
-        <div className={`neu-card ${theme}`}>
+        <div className={`glass-card ${theme}`}>
           <Buildings
             buildings={gameState.buildings}
             resources={gameState.resources}
@@ -26,7 +25,7 @@ const OverviewTab: React.FC<OverviewTabProps> = ({ gameState, onBuild }) => {
       </div>
 
       <div className="md:col-span-1">
-        <div className={`neu-card ${theme}`}>
+        <div className={`glass-card ${theme}`}>
           <GameLog actions={gameState.actions} />
         </div>
       </div>

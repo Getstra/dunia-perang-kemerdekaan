@@ -1,13 +1,7 @@
-
 import React, { useState } from "react";
 import { UserPlus, Users, Heart } from "lucide-react";
 import { useTheme } from "@/providers/ThemeProvider";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import PopulationOverview from "../population/PopulationOverview";
 import CitizensPanel from "../population/CitizensPanel";
@@ -36,27 +30,73 @@ const PopulationTab: React.FC = () => {
       { name: "Food Supply", impact: "+15%", positive: true },
       { name: "Housing", impact: "+10%", positive: true },
       { name: "Taxes", impact: "-5%", positive: false },
-      { name: "Work Conditions", impact: "+5%", positive: true }
-    ]
+      { name: "Work Conditions", impact: "+5%", positive: true },
+    ],
   };
 
   // Job assignments
   const assignments = [
-    { type: "Farmers", count: 12, total: 12, production: "+24 food/day", skill: 1 },
-    { type: "Miners", count: 8, total: 10, production: "+16 stone/day", skill: 1 },
-    { type: "Woodcutters", count: 6, total: 8, production: "+12 wood/day", skill: 1 },
-    { type: "Unemployed", count: 9, total: 9, production: "None", skill: 0 }
+    {
+      type: "Farmers",
+      count: 12,
+      total: 12,
+      production: "+24 food/day",
+      skill: 1,
+    },
+    {
+      type: "Miners",
+      count: 8,
+      total: 10,
+      production: "+16 stone/day",
+      skill: 1,
+    },
+    {
+      type: "Woodcutters",
+      count: 6,
+      total: 8,
+      production: "+12 wood/day",
+      skill: 1,
+    },
+    { type: "Unemployed", count: 9, total: 9, production: "None", skill: 0 },
   ];
 
   // Specialist types
   const specialistTypes = [
-    { id: 1, name: "Scholar", benefit: "Research +15%", cost: 150, time: "2 days", requirements: "Library Level 1" },
-    { id: 2, name: "Artisan", benefit: "Building Cost -10%", cost: 200, time: "3 days", requirements: "Workshop Level 1" },
-    { id: 3, name: "Merchant", benefit: "Trade Income +20%", cost: 250, time: "3 days", requirements: "Market Level 1"  },
-    { id: 4, name: "Engineer", benefit: "Building Speed +15%", cost: 300, time: "4 days", requirements: "University Level 1"  }
+    {
+      id: 1,
+      name: "Scholar",
+      benefit: "Research +15%",
+      cost: 150,
+      time: "2 days",
+      requirements: "Library Level 1",
+    },
+    {
+      id: 2,
+      name: "Artisan",
+      benefit: "Building Cost -10%",
+      cost: 200,
+      time: "3 days",
+      requirements: "Workshop Level 1",
+    },
+    {
+      id: 3,
+      name: "Merchant",
+      benefit: "Trade Income +20%",
+      cost: 250,
+      time: "3 days",
+      requirements: "Market Level 1",
+    },
+    {
+      id: 4,
+      name: "Engineer",
+      benefit: "Building Speed +15%",
+      cost: 300,
+      time: "4 days",
+      requirements: "University Level 1",
+    },
   ];
 
-  // Active specialists 
+  // Active specialists
   const activeSpecialists: any[] = [];
 
   // Population stats
@@ -82,14 +122,18 @@ const PopulationTab: React.FC = () => {
 
   return (
     <div className="md:col-span-3">
-      <div className={`neu-card ${theme}`}>
+      <div className={`glass-card ${theme}`}>
         <h2 className="text-2xl font-bold mb-4 flex items-center">
           <UserPlus className="w-6 h-6 mr-2 text-amber-600" /> Population
         </h2>
-        
+
         <PopulationOverview populationData={populationData} />
-        
-        <Tabs defaultValue="citizens" className="w-full" onValueChange={setActiveTab}>
+
+        <Tabs
+          defaultValue="citizens"
+          className="w-full"
+          onValueChange={setActiveTab}
+        >
           <TabsList className="grid grid-cols-2 mb-4">
             <TabsTrigger value="citizens" className="flex items-center gap-1">
               <Users className="h-4 w-4" /> Citizens
@@ -98,31 +142,31 @@ const PopulationTab: React.FC = () => {
               <Heart className="h-4 w-4" /> Happiness & Details
             </TabsTrigger>
           </TabsList>
-          
+
           <TabsContent value="citizens" className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <CitizensPanel 
-                assignments={assignments} 
+              <CitizensPanel
+                assignments={assignments}
                 onShowCitizenDialog={() => setShowCitizenDialog(true)}
                 handleWorkerAdjustment={handleWorkerAdjustment}
               />
-              
-              <SpecialistsPanel 
+
+              <SpecialistsPanel
                 activeSpecialists={activeSpecialists}
-                onShowSpecialistDialog={() => setShowSpecialistDialog(true)} 
+                onShowSpecialistDialog={() => setShowSpecialistDialog(true)}
               />
             </div>
           </TabsContent>
-          
+
           <TabsContent value="details" className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <HappinessPanel 
+              <HappinessPanel
                 happinessFactors={populationData.happinessFactors}
                 happiness={populationData.happiness}
                 getHappinessColor={getHappinessColor}
               />
-              
-              <PopulationStatsPanel 
+
+              <PopulationStatsPanel
                 populationStats={populationStats}
                 populationGrowth={populationData.growth}
               />
@@ -130,15 +174,15 @@ const PopulationTab: React.FC = () => {
           </TabsContent>
         </Tabs>
       </div>
-      
+
       {/* Dialogs */}
-      <CitizenManagementDialog 
+      <CitizenManagementDialog
         open={showCitizenDialog}
         onOpenChange={setShowCitizenDialog}
         assignments={assignments}
       />
-      
-      <SpecialistTrainingDialog 
+
+      <SpecialistTrainingDialog
         open={showSpecialistDialog}
         onOpenChange={setShowSpecialistDialog}
         specialistTypes={specialistTypes}

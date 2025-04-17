@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useTheme } from "@/providers/ThemeProvider";
 import { GameState } from "@/utils/types";
@@ -31,7 +30,7 @@ const GameContainer: React.FC<GameContainerProps> = ({
   const [activeMenu, setActiveMenu] = useState("overview");
 
   return (
-    <div className={`neu-card ${theme}`}>
+    <div className={`glass-card ${theme}`}>
       <GameHeader
         kingdomName={gameState.kingdom.name}
         rulerName={gameState.kingdom.ruler}
@@ -47,7 +46,7 @@ const GameContainer: React.FC<GameContainerProps> = ({
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
           <div className="md:col-span-3">
-            <div className={`neu-card ${theme}`}>
+            <div className={`glass-card ${theme}`}>
               <Resources resources={gameState.resources} />
             </div>
           </div>

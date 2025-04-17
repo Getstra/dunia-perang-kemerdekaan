@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -27,22 +26,22 @@ interface SpecialistTrainingDialogProps {
 const SpecialistTrainingDialog: React.FC<SpecialistTrainingDialogProps> = ({
   open,
   onOpenChange,
-  specialistTypes
+  specialistTypes,
 }) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="sm:max-w-[500px] glass-dialog">
         <DialogHeader>
           <DialogTitle>Train Specialists</DialogTitle>
         </DialogHeader>
-        
+
         <div className="py-4">
           <div className="space-y-4">
             <h4 className="font-semibold text-sm">Available Specialists</h4>
-            
+
             <div className="space-y-2">
               {specialistTypes.map((specialist) => (
-                <div key={specialist.id} className="p-3 border border-amber-800/20 rounded-md bg-amber-900/5">
+                <div key={specialist.id} className="p-3 glass-panel rounded-md">
                   <div className="flex justify-between">
                     <div>
                       <p className="font-medium">{specialist.name}</p>
@@ -54,9 +53,18 @@ const SpecialistTrainingDialog: React.FC<SpecialistTrainingDialogProps> = ({
                       </p>
                     </div>
                     <div className="text-right">
-                      <p className="text-xs text-muted-foreground">Cost: {specialist.cost} Gold</p>
-                      <p className="text-xs text-muted-foreground">Time: {specialist.time}</p>
-                      <Button size="sm" variant="outline" className="mt-1" disabled>
+                      <p className="text-xs text-muted-foreground">
+                        Cost: {specialist.cost} Gold
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        Time: {specialist.time}
+                      </p>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="mt-1"
+                        disabled
+                      >
                         Train
                       </Button>
                     </div>
@@ -64,8 +72,8 @@ const SpecialistTrainingDialog: React.FC<SpecialistTrainingDialogProps> = ({
                 </div>
               ))}
             </div>
-            
-            <div className="mt-4 p-3 border border-amber-800/20 rounded-md bg-amber-900/5">
+
+            <div className="mt-4 p-3 glass-panel rounded-md">
               <p className="text-sm font-medium">Requirements</p>
               <p className="text-xs text-muted-foreground mt-1">
                 You need to build a University (Level 1) to train specialists.
@@ -73,7 +81,7 @@ const SpecialistTrainingDialog: React.FC<SpecialistTrainingDialogProps> = ({
             </div>
           </div>
         </div>
-        
+
         <DialogFooter>
           <Button onClick={() => onOpenChange(false)}>Close</Button>
         </DialogFooter>
