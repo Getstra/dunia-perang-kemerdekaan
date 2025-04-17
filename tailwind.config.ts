@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -55,7 +56,7 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // Neumorphism colors
+        // Enhanced Neumorphism colors for better dark mode compatibility
         neu: {
           bg: {
             light: "#f0f0f3",
@@ -80,6 +81,10 @@ export default {
             secondary: "#7048e8",
             tertiary: "#5734b6",
           },
+          // Medieval theme accents
+          gold: "#D4AF37",
+          brown: "#8B4513",
+          stone: "#7F7F7F",
         },
       },
       borderRadius: {
@@ -118,6 +123,8 @@ export default {
         "neu-dark-sm": "5px 5px 10px #151823, -5px -5px 10px #202330",
         "neu-dark-inner":
           "inset 5px 5px 10px #151823, inset -5px -5px 10px #202330",
+        "neu-card-light": "8px 8px 16px #d1d9e6, -8px -8px 16px #ffffff",
+        "neu-card-dark": "8px 8px 16px #151823, -8px -8px 16px #202330",
       },
     },
   },

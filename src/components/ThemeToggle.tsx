@@ -9,13 +9,17 @@ export default function ThemeToggle() {
   return (
     <button 
       onClick={toggleTheme}
-      className="glass-panel p-2 rounded-full transition-all duration-300 hover:scale-110"
+      className={`p-3 rounded-full transition-all duration-300 hover:scale-110 ${
+        theme === 'light' 
+          ? 'bg-neu-bg-light shadow-neu-light-sm hover:shadow-neu-light' 
+          : 'bg-neu-bg-dark shadow-neu-dark-sm hover:shadow-neu-dark'
+      }`}
       aria-label="Toggle theme"
     >
       {theme === 'light' ? (
-        <Moon className="h-5 w-5 text-white" />
+        <Moon className="h-5 w-5 text-neu-text-light" />
       ) : (
-        <Sun className="h-5 w-5 text-white" />
+        <Sun className="h-5 w-5 text-neu-text-dark" />
       )}
     </button>
   );

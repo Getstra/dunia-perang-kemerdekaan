@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -75,28 +76,19 @@
     @apply bg-background text-foreground;
   }
 
-  /* Glassmorphism components */
-  .glass-card {
-    @apply rounded-2xl p-6 transition-all duration-300 backdrop-blur-lg bg-white/15 dark:bg-black/10 border border-white/20 dark:border-white/10 shadow-lg;
+  /* Neumorphic components - Dark mode compatible */
+  .neu-card {
+    @apply rounded-2xl p-6 transition-all duration-300;
   }
 
-  .glass-button {
-    @apply px-6 py-3 rounded-lg font-medium transition-all duration-200 backdrop-blur-lg bg-white/15 dark:bg-white/5 border border-white/30 dark:border-white/10 hover:bg-white/25 dark:hover:bg-white/10 text-white;
+  .neu-card.light {
+    @apply bg-neu-bg-light text-neu-text-light shadow-neu-card-light;
   }
 
-  .glass-input {
-    @apply rounded-lg px-4 py-3 transition-all duration-200 w-full backdrop-blur-lg bg-white/10 dark:bg-black/10 border border-white/20 dark:border-white/10 focus:outline-none focus:ring-2 focus:ring-neu-accent-primary focus:border-transparent text-white;
+  .neu-card.dark {
+    @apply bg-neu-bg-dark text-neu-text-dark shadow-neu-card-dark;
   }
 
-  .glass-dialog {
-    @apply rounded-xl backdrop-blur-lg bg-white/15 dark:bg-black/20 border border-white/20 dark:border-white/10 shadow-lg;
-  }
-
-  .glass-panel {
-    @apply rounded-lg backdrop-blur-lg bg-white/15 dark:bg-black/20 border border-white/20 dark:border-white/10 shadow-md;
-  }
-
-  /* Neumorphism components (keeping for backward compatibility) */
   .neu-button {
     @apply px-6 py-3 rounded-lg font-medium transition-all duration-200;
   }
@@ -107,18 +99,6 @@
 
   .neu-button.dark {
     @apply bg-neu-bg-dark text-neu-text-dark shadow-neu-dark-sm hover:shadow-neu-dark hover:translate-y-[-2px];
-  }
-
-  .neu-card {
-    @apply rounded-2xl p-6 transition-all duration-300;
-  }
-
-  .neu-card.light {
-    @apply bg-neu-bg-light text-neu-text-light shadow-neu-light;
-  }
-
-  .neu-card.dark {
-    @apply bg-neu-bg-dark text-neu-text-dark shadow-neu-dark;
   }
 
   .neu-input {
@@ -133,12 +113,41 @@
     @apply bg-neu-bg-dark text-neu-text-dark shadow-neu-dark-inner focus:outline-none focus:ring-2 focus:ring-neu-accent-primary;
   }
 
+  .neu-panel {
+    @apply rounded-lg p-4 transition-all duration-200;
+  }
+
+  .neu-panel.light {
+    @apply bg-neu-bg-light text-neu-text-light shadow-neu-light-sm;
+  }
+
+  .neu-panel.dark {
+    @apply bg-neu-bg-dark text-neu-text-dark shadow-neu-dark-sm;
+  }
+
   .neu-progress {
     @apply h-4 rounded-full overflow-hidden relative bg-secondary;
   }
 
   .neu-progress-bar {
     @apply h-full bg-neu-accent-primary transition-all duration-300;
+  }
+
+  /* Glass panels - keep for backward compatibility */
+  .glass-card {
+    @apply neu-card;
+  }
+
+  .glass-button {
+    @apply neu-button;
+  }
+
+  .glass-panel {
+    @apply neu-panel;
+  }
+
+  .glass-input {
+    @apply neu-input;
   }
 
   /* Medieval font */
@@ -224,4 +233,21 @@
 
 .border-wood-dark {
   @apply border-amber-900;
+}
+
+/* Neumorphic specific classes */
+.neu-concave {
+  @apply bg-gradient-to-br from-neutral-200 to-neutral-50 dark:from-neutral-800 dark:to-neutral-950;
+}
+
+.neu-convex {
+  @apply bg-gradient-to-tl from-neutral-200 to-neutral-50 dark:from-neutral-800 dark:to-neutral-950;
+}
+
+.text-stone {
+  @apply text-gray-600 dark:text-gray-400;
+}
+
+.text-wood-dark {
+  @apply text-amber-800 dark:text-amber-700;
 }

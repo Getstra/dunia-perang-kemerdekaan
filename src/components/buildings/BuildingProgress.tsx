@@ -1,7 +1,6 @@
 
 import React from "react";
 import { Building } from "../../utils/types";
-import { Progress } from "@/components/ui/progress";
 import { calculateProgress, formatTimeRemaining } from "./utils/buildingUtils";
 import { Clock } from "lucide-react";
 
@@ -20,7 +19,7 @@ const BuildingProgress: React.FC<BuildingProgressProps> = ({ building }) => {
   return (
     <div className="mt-4 space-y-2">
       <div className="flex justify-between items-center text-sm">
-        <span className="font-medium text-amber-700 dark:text-amber-400">
+        <span className={`font-medium ${building.completed ? "text-green-600 dark:text-green-400" : "text-amber-700 dark:text-amber-400"}`}>
           {progressValue.toFixed(0)}% Complete
         </span>
         <div className="flex items-center text-amber-600 dark:text-amber-500">
@@ -28,10 +27,12 @@ const BuildingProgress: React.FC<BuildingProgressProps> = ({ building }) => {
           <span>{timeRemaining}</span>
         </div>
       </div>
-      <Progress
-        value={progressValue}
-        className="h-3 bg-amber-200/30 dark:bg-amber-950/50 rounded-full shadow-inner"
-      />
+      <div className="neu-progress h-4 rounded-full overflow-hidden relative">
+        <div 
+          className="neu-progress-bar h-full transition-all duration-300" 
+          style={{ width: `${progressValue}%` }}
+        ></div>
+      </div>
     </div>
   );
 };
