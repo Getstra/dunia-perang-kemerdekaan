@@ -244,7 +244,7 @@ const BuildingCard: React.FC<BuildingCardProps> = ({
                 {Object.entries(building.production)
                   .filter(([key, value]) => {
                     // Skip specialists object if it exists
-                    return key !== 'specialists' && value;
+                    return key !== 'specialists' && value !== undefined && value !== null;
                   })
                   .map(([key, value], index, arr) => (
                     <span key={key} className="inline-flex items-center">
@@ -257,8 +257,8 @@ const BuildingCard: React.FC<BuildingCardProps> = ({
                 {building.production.specialists && (
                   <div className="mt-1">
                     <span className="font-medium">Specialists: </span>
-                    {Object.entries(building.production.specialists)
-                      .filter(([_, value]) => value)
+                    {Object.entries(building.production.specialists || {})
+                      .filter(([_, value]) => value !== undefined && value !== null && value > 0)
                       .map(([key, value], index, arr) => (
                         <span key={key} className="inline-flex items-center">
                           <span className="font-semibold">{value}</span> {key}

@@ -1,3 +1,4 @@
+
 export interface Kingdom {
   id: string;
   name: string;
@@ -28,7 +29,9 @@ export interface Building {
   maxLevel?: number;
   type: BuildingType;
   cost: Partial<Resources>;
-  production: Partial<Resources>;
+  production: Partial<Omit<Resources, 'specialists'>> & {
+    specialists?: Partial<Resources['specialists']>;
+  };
   description: string;
   constructionTime: number; // Time in minutes
   completed: boolean;
