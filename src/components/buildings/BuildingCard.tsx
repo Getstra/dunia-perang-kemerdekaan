@@ -64,20 +64,24 @@ const BuildingCard: React.FC<BuildingCardProps> = ({
 
   return (
     <div
-      className={`glass-panel rounded-md p-3 ${
+      className={`glass-panel rounded-lg p-5 shadow-lg backdrop-blur-sm border transition-all duration-300 hover:shadow-xl ${
         building.completed
-          ? "border-green-600/30 bg-green-600/10"
+          ? "border-green-600/30 bg-green-600/10 hover:bg-green-600/15"
           : building.completionTime
-            ? "border-amber-600/30 bg-amber-900/20"
-            : ""
+            ? "border-amber-600/30 bg-amber-900/20 hover:bg-amber-900/25"
+            : "border-amber-500/20 bg-amber-50/10 dark:bg-amber-950/10 hover:bg-amber-50/20 dark:hover:bg-amber-950/20"
       }`}
     >
       <div className="flex justify-between items-start">
         <div>
           <div className="flex items-center">
-            <h4 className="font-medium text-lg">
+            <h4 className="font-semibold text-lg text-amber-800 dark:text-amber-400">
               {building.name}{" "}
-              {building.level > 0 && `(Level ${building.level})`}
+              {building.level > 0 && (
+                <span className="ml-1 text-sm font-medium px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-300 shadow-inner">
+                  Level {building.level}
+                </span>
+              )}
             </h4>
             <TooltipProvider>
               <Tooltip>
@@ -97,98 +101,153 @@ const BuildingCard: React.FC<BuildingCardProps> = ({
               </Tooltip>
             </TooltipProvider>
           </div>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-muted-foreground mt-1">
             {building.description}
           </p>
         </div>
 
         {building.completionTime && !building.completed && (
-          <div className="flex items-center text-amber-600">
-            <Hourglass className="w-4 h-4 mr-1" />
-            <span className="text-sm">
+          <div className="flex items-center text-amber-600 bg-amber-100/50 dark:bg-amber-900/30 px-3 py-1.5 rounded-full shadow-sm border border-amber-200/50 dark:border-amber-700/30">
+            <Hourglass className="w-4 h-4 mr-2" />
+            <span className="text-sm font-medium">
               {formatTimeRemaining(building.completionTime)}
             </span>
           </div>
         )}
 
         {building.completed && (
-          <div className="flex items-center text-green-600">
-            <CheckCircle className="w-4 h-4 mr-1" />
-            <span className="text-sm">Complete</span>
+          <div className="flex items-center text-green-600 bg-green-100/50 dark:bg-green-900/30 px-3 py-1.5 rounded-full shadow-sm border border-green-200/50 dark:border-green-700/30">
+            <CheckCircle className="w-4 h-4 mr-2" />
+            <span className="text-sm font-medium">Complete</span>
           </div>
         )}
       </div>
 
       {building.completionTime && !building.completed && (
-        <div className="mt-2">
-          <Progress value={calculateProgress(building)} className="h-1.5" />
+        <div className="mt-4">
+          <Progress
+            value={calculateProgress(building)}
+            className="h-3 bg-amber-200/30 dark:bg-amber-950/50 rounded-full shadow-inner"
+          />
         </div>
       )}
 
       {!building.completionTime && (
-        <div className="space-y-2 mt-3">
-          <div className="flex flex-wrap gap-2 text-sm">
+        <div className="space-y-3 mt-4">
+          <div className="grid grid-cols-2 gap-3 text-sm">
             {building.cost.gold && (
               <span
-                className={
-                  resources.gold < building.cost.gold ? "text-red-600" : ""
-                }
+                className={`flex items-center px-2 py-1 rounded-md ${resources.gold < building.cost.gold ? "bg-red-100/50 dark:bg-red-900/30 text-red-600 dark:text-red-400" : "bg-amber-100/50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300"}`}
               >
-                Gold: {building.cost.gold}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-4 h-4 mr-1"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <circle cx="12" cy="12" r="8" />
+                  <path d="M9.5 9.5c.5-1 2-1 2.5.5s2 1.5 2.5 0 2-1 2.5.5 2 1.5 2.5 0" />
+                </svg>
+                {building.cost.gold}
               </span>
             )}
             {building.cost.wood && (
               <span
-                className={
-                  resources.wood < building.cost.wood ? "text-red-600" : ""
-                }
+                className={`flex items-center px-2 py-1 rounded-md ${resources.wood < building.cost.wood ? "bg-red-100/50 dark:bg-red-900/30 text-red-600 dark:text-red-400" : "bg-amber-100/50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300"}`}
               >
-                Wood: {building.cost.wood}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-4 h-4 mr-1"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M7 22V9.5a3 3 0 0 1 3-3h0a3 3 0 0 1 3 3V22" />
+                  <path d="M10 14h4" />
+                  <path d="M13 6.5a3 3 0 0 1 3 3h0a3 3 0 0 1-3 3" />
+                </svg>
+                {building.cost.wood}
               </span>
             )}
             {building.cost.stone && (
               <span
-                className={
-                  resources.stone < building.cost.stone ? "text-red-600" : ""
-                }
+                className={`flex items-center px-2 py-1 rounded-md ${resources.stone < building.cost.stone ? "bg-red-100/50 dark:bg-red-900/30 text-red-600 dark:text-red-400" : "bg-amber-100/50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300"}`}
               >
-                Stone: {building.cost.stone}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-4 h-4 mr-1"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="m12 3-4 7h8Z" />
+                  <path d="m17 13-5 8-5-8Z" />
+                </svg>
+                {building.cost.stone}
               </span>
             )}
             {building.cost.food && (
               <span
-                className={
-                  resources.food < building.cost.food ? "text-red-600" : ""
-                }
+                className={`flex items-center px-2 py-1 rounded-md ${resources.food < building.cost.food ? "bg-red-100/50 dark:bg-red-900/30 text-red-600 dark:text-red-400" : "bg-amber-100/50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300"}`}
               >
-                Food: {building.cost.food}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-4 h-4 mr-1"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M12 12a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                  <path d="M19.5 10a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
+                  <path d="M7.5 7.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
+                  <path d="M19.5 19.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
+                  <path d="M7.5 19.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
+                </svg>
+                {building.cost.food}
               </span>
             )}
           </div>
 
-          <div className="flex items-center text-sm">
+          <div className="flex items-center text-sm bg-blue-100/50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-3 py-2 rounded-md shadow-sm border border-blue-200/50 dark:border-blue-700/30">
             <Clock className="w-4 h-4 mr-1" />
             <span>{building.constructionTime} minutes</span>
           </div>
 
           {building.production &&
             Object.keys(building.production).length > 0 && (
-              <div className="text-sm">
+              <div className="text-sm bg-green-100/50 dark:bg-green-900/30 text-green-700 dark:text-green-300 px-3 py-2 rounded-md shadow-sm border border-green-200/50 dark:border-green-700/30">
                 <span className="font-medium">Produces: </span>
                 {Object.entries(building.production)
                   .filter(([_, value]) => value)
-                  .map(([key, value]) => `${value} ${key}`)
-                  .join(", ")}
+                  .map(([key, value], index, arr) => (
+                    <span key={key} className="inline-flex items-center">
+                      <span className="font-semibold">{value}</span> {key}
+                      {index < arr.length - 1 ? ", " : ""}
+                    </span>
+                  ))}
               </div>
             )}
 
           <button
             onClick={() => onBuild(building.id)}
             disabled={!canBuild(building)}
-            className={`w-full mt-2 py-1 px-3 rounded-sm border text-sm font-medium
+            className={`w-full mt-4 py-2.5 px-4 rounded-md border text-sm font-semibold shadow-md transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]
               ${
                 canBuild(building)
-                  ? "bg-amber-600 hover:bg-amber-700 text-white border-amber-700 transition-colors"
+                  ? "bg-amber-600 hover:bg-amber-700 text-white border-amber-700 transition-colors shadow-amber-500/20"
                   : "bg-gray-200 text-gray-500 border-gray-300 cursor-not-allowed"
               }`}
           >
@@ -196,8 +255,8 @@ const BuildingCard: React.FC<BuildingCardProps> = ({
           </button>
 
           {!canBuild(building) && (
-            <div className="flex items-center mt-1 text-sm text-red-600">
-              <AlertTriangle className="w-3 h-3 mr-1" />
+            <div className="flex items-center mt-3 text-sm text-red-600 bg-red-100/50 dark:bg-red-900/20 px-3 py-2 rounded-md shadow-sm border border-red-200/50 dark:border-red-700/30">
+              <AlertTriangle className="w-4 h-4 mr-1" />
               <span>Not enough resources</span>
             </div>
           )}
