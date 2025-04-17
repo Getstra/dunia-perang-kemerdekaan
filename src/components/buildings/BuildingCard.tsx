@@ -253,10 +253,12 @@ const BuildingCard: React.FC<BuildingCardProps> = ({
                 ))}
                 
               {/* Handle specialists separately if they exist */}
-              {building.production.specialists && Object.keys(building.production.specialists).length > 0 && (
+              {building.production.specialists && 
+               typeof building.production.specialists === 'object' && 
+               Object.keys(building.production.specialists).length > 0 && (
                 <div className="mt-1">
                   <span className="font-medium">Specialists: </span>
-                  {Object.entries(building.production.specialists)
+                  {Object.entries(building.production.specialists as Record<string, number>)
                     .filter(([_, value]) => value !== undefined && value !== null && value > 0)
                     .map(([key, value], index, arr) => (
                       <span key={key} className="inline-flex items-center">
