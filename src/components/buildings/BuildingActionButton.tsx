@@ -1,8 +1,8 @@
 
 import React from "react";
 import { Building, Resources } from "../../utils/types";
-import { AlertTriangle, CheckCircle } from "lucide-react";
-import { canBuild } from "./utils/buildingUtils";
+import { AlertTriangle, CheckCircle, Clock, Hammer } from "lucide-react";
+import { canBuild, formatTimeRemaining } from "./utils/buildingUtils";
 
 interface BuildingActionButtonProps {
   building: Building;
@@ -17,6 +17,22 @@ const BuildingActionButton: React.FC<BuildingActionButtonProps> = ({
 }) => {
   const isAtMaxLevel = building.maxLevel && building.level >= building.maxLevel;
   const canBuildBuilding = canBuild(building, resources);
+  
+  // If building is in progress, show construction status
+  if (building.completionTime && !building.completed) {
+    const timeRemaining = formatTimeRemaining(building.completionTime);
+    
+    return (
+      <div className="mt-4">
+        <div className="w-full py-2.5 px-4 rounded-md border text-sm font-semibold bg-amber-600/80 text-white border-amber-700 flex items-center justify-center">
+          <Clock className="w-4 h-4 mr-2 animate-pulse" />
+          <span>
+            Construction in progress: {timeRemaining}
+          </span>
+        </div>
+      </div>
+    );
+  }
   
   return (
     <div className="mt-4">
@@ -36,27 +52,14 @@ const BuildingActionButton: React.FC<BuildingActionButtonProps> = ({
       >
         {building.level === 0 ? (
           <span className="flex items-center justify-center">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-4 h-4 mr-1"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-              <line x1="12" y1="8" x2="12" y2="16" />
-              <line x1="8" y1="12" x2="16" y2="12" />
-            </svg>
+            <Hammer className="w-4 h-4 mr-1.5" />
             Build {building.name}
           </span>
         ) : (
           <span className="flex items-center justify-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="w-4 h-4 mr-1"
+              className="w-4 h-4 mr-1.5"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"

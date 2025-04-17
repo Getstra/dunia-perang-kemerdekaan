@@ -16,10 +16,20 @@ export const formatTimeRemaining = (completionTime: number | undefined): string 
 
   const now = Date.now();
   const remaining = Math.max(0, completionTime - now);
-  const minutes = Math.floor(remaining / (1000 * 60));
-
-  if (minutes < 1) return "Completing...";
-  return `${minutes}m remaining`;
+  
+  if (remaining <= 0) return "Completing...";
+  
+  const hours = Math.floor(remaining / (1000 * 60 * 60));
+  const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
+  
+  if (hours > 0) {
+    return `${hours}h ${minutes}m`;
+  } else if (minutes > 0) {
+    return `${minutes}m ${seconds}s`;
+  } else {
+    return `${seconds}s`;
+  }
 };
 
 // Calculate completion percentage
