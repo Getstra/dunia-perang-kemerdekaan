@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Building, Resources } from "../../utils/types";
 import {
@@ -241,13 +242,31 @@ const BuildingCard: React.FC<BuildingCardProps> = ({
               <div className="text-sm bg-green-100/50 dark:bg-green-900/30 text-green-700 dark:text-green-300 px-3 py-2 rounded-md shadow-sm border border-green-200/50 dark:border-green-700/30">
                 <span className="font-medium">Produces: </span>
                 {Object.entries(building.production)
-                  .filter(([_, value]) => value)
+                  .filter(([key, value]) => {
+                    // Skip specialists object if it exists
+                    return key !== 'specialists' && value;
+                  })
                   .map(([key, value], index, arr) => (
                     <span key={key} className="inline-flex items-center">
                       <span className="font-semibold">{value}</span> {key}
                       {index < arr.length - 1 ? ", " : ""}
                     </span>
                   ))}
+                  
+                {/* Handle specialists separately if they exist */}
+                {building.production.specialists && (
+                  <div className="mt-1">
+                    <span className="font-medium">Specialists: </span>
+                    {Object.entries(building.production.specialists)
+                      .filter(([_, value]) => value)
+                      .map(([key, value], index, arr) => (
+                        <span key={key} className="inline-flex items-center">
+                          <span className="font-semibold">{value}</span> {key}
+                          {index < arr.length - 1 ? ", " : ""}
+                        </span>
+                      ))}
+                  </div>
+                )}
               </div>
             )}
 
