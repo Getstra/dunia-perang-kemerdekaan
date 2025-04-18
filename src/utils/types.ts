@@ -1,4 +1,3 @@
-
 export interface Kingdom {
   id: string;
   name: string;
@@ -9,6 +8,7 @@ export interface Kingdom {
 
 export interface Resources {
   gold: number;
+  iron: number;
   land: number;
   population: number;
   food: number;
@@ -20,6 +20,7 @@ export interface Resources {
     soldiers: number;
     scholars: number;
   };
+  science: number;
 }
 
 export interface Building {
